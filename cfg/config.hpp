@@ -1,0 +1,9 @@
+#ifndef __GOL_CONFIG_HPP__
+#define __GOL_CONFIG_HPP__
+
+#define CONFIG_WINDOW_WIDTH 1600
+#define CONFIG_WINDOW_HEIGHT 1200
+
+#define STARTING_ALIVE_PROBABILITY 0.05
+
+#endif
