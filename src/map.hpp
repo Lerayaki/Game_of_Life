@@ -8,6 +8,9 @@ public:
     Map();
     void update();
 private:
+    int map_width;
+    int map_height;
+
     bool cells[CONFIG_WINDOW_HEIGHT][CONFIG_WINDOW_WIDTH][2];
     bool isEvenTurn;
 
