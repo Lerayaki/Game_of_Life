@@ -1,7 +1,4 @@
 # Conway's Game of Life
  Game of Life
 
-
-
-https://user-images.githubusercontent.com/36731543/158039100-abb574f3-2d0c-4e7c-8ca0-a1a231fbecab.mp4
-
+![sfml-gol](https://user-images.githubusercontent.com/36731543/158039192-04c8eb41-8c55-4af7-ae8b-b53560002ad9.gif)
