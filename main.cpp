@@ -10,11 +10,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(CONFIG_WINDOW_WIDTH, CONFIG_WINDOW_HEIGHT), "Game of Life");
     window.setFramerateLimit(CONFIG_WINDOW_FPS_LIMIT);
 
-    Map map;
-
-    window.clear(sf::Color::Black);
-    window.draw(map);
-    window.display();
+    Map map(sf::Color::White);
 
     // run the program as long as the window is open
     while (window.isOpen())
@@ -31,7 +27,7 @@ int main()
         }
         if (!isPaused) {
             // clear the window with black color
-            window.clear(sf::Color::Black);
+            window.clear(sf::Color(64,64,64));
 
             // draw everything here...
             window.draw(map);

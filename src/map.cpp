@@ -7,6 +7,12 @@ Map::Map(){
             cellMap[y][x][isEvenTurn] = trand::trandbool(CONFIG_CELL_INIT_TRUE_PROBABILITY);
 }
 
+Map::Map(const sf::Color& color){
+    new (this) Map();
+
+    mapColor = color;
+}
+
 void Map::update(){
 
     for (int y=0; y<_mapHeight; y++)
@@ -33,7 +39,7 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const {
                 for (int y=0; y<_mapHeight; y++)
                     for (int x=0; x<_mapWidth; x++)
                         if (cellMap[y][x][isEvenTurn]) {
-                            sf::Vertex point(sf::Vector2f(x, y), sf::Color::White);
+                            sf::Vertex point(sf::Vector2f(x, y), mapColor);
                             pixels.resize(pixelCount++);
                             pixels.append(point);
                         }
@@ -47,10 +53,10 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const {
                             int cellOriginX = x*CONFIG_CELL_SCALE_FACTOR;
                             int cellOriginY = y*CONFIG_CELL_SCALE_FACTOR;
 
-                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX, cellOriginY), sf::Color::White));
-                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX, cellOriginY + CONFIG_CELL_SCALE_FACTOR-1), sf::Color::White));
-                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX + CONFIG_CELL_SCALE_FACTOR-1, cellOriginY + CONFIG_CELL_SCALE_FACTOR-1), sf::Color::White));
-                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX + CONFIG_CELL_SCALE_FACTOR-1, cellOriginY), sf::Color::White));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX, cellOriginY), mapColor));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX, cellOriginY + CONFIG_CELL_SCALE_FACTOR-1), mapColor));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX + CONFIG_CELL_SCALE_FACTOR-1, cellOriginY + CONFIG_CELL_SCALE_FACTOR-1), mapColor));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX + CONFIG_CELL_SCALE_FACTOR-1, cellOriginY), mapColor));
                         }
 
                 target.draw(cells, states);
