@@ -8,7 +8,7 @@ int main()
     bool isPaused = false;
     // create the window
     sf::RenderWindow window(sf::VideoMode(CONFIG_WINDOW_WIDTH, CONFIG_WINDOW_HEIGHT), "Game of Life");
-    window.setFramerateLimit(15);
+    window.setFramerateLimit(CONFIG_WINDOW_FPS_LIMIT);
 
     Map map;
 

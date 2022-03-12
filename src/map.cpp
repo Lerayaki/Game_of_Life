@@ -1,25 +1,23 @@
 #include "map.hpp"
 
 Map::Map(){   
-    map_width = CONFIG_WINDOW_WIDTH;
-    map_height = CONFIG_WINDOW_HEIGHT - CONFIG_WINDOW_LEGEND_HEIGHT;
     isEvenTurn = false; 
-    for (int y=0; y<map_height; y++)
-        for (int x=0; x<map_width; x++)
-            cells[y][x][isEvenTurn] = trand::trandbool(CONFIG_CELL_INIT_TRUE_PROBABILITY);
+    for (int y=0; y<_mapHeight; y++)
+        for (int x=0; x<_mapWidth; x++)
+            cellMap[y][x][isEvenTurn] = trand::trandbool(CONFIG_CELL_INIT_TRUE_PROBABILITY);
 }
 
 void Map::update(){
 
-    for (int y=0; y<map_height; y++)
-        for (int x=0; x<map_width; x++){
+    for (int y=0; y<_mapHeight; y++)
+        for (int x=0; x<_mapWidth; x++){
             int alive = 0;
-            for (int i=std::max(y-1,0); i<=std::min(y+1,map_height); i++)
-                for (int j=std::max(x-1,0); j<=std::min(x+1,map_width); j++)
-                    if ((i!=y || j!=x) && cells[i][j][isEvenTurn])
+            for (int i=std::max(y-1,0); i<=std::min(y+1,_mapHeight); i++)
+                for (int j=std::max(x-1,0); j<=std::min(x+1,_mapWidth); j++)
+                    if ((i!=y || j!=x) && cellMap[i][j][isEvenTurn])
                         alive++;
                 
-            cells[y][x][!isEvenTurn] = (cells[y][x][isEvenTurn] ? (alive>1 && alive<4) : alive==3);
+            cellMap[y][x][!isEvenTurn] = (cellMap[y][x][isEvenTurn] ? (alive>1 && alive<4) : alive==3);
         }
 
     isEvenTurn = !isEvenTurn;
@@ -29,17 +27,35 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         states.transform *= getTransform();
         states.texture = NULL;
 
-        int pixelCount = 0;
-        sf::VertexArray pixels(sf::Points,pixelCount);
-        for (int y=0; y<map_height; y++)
-            for (int x=0; x<map_width; x++)
-                if (cells[y][x][isEvenTurn]) {
-                    sf::Vertex point(sf::Vector2f(x, y), sf::Color::White);
-                    pixels.resize(pixelCount++);
-                    pixels.append(point);
-                }
+        if(CONFIG_CELL_SCALE_FACTOR == 1){
+                int pixelCount = 0;
+                sf::VertexArray pixels(sf::Points,pixelCount);
+                for (int y=0; y<_mapHeight; y++)
+                    for (int x=0; x<_mapWidth; x++)
+                        if (cellMap[y][x][isEvenTurn]) {
+                            sf::Vertex point(sf::Vector2f(x, y), sf::Color::White);
+                            pixels.resize(pixelCount++);
+                            pixels.append(point);
+                        }
 
-        target.draw(pixels, states);
+                target.draw(pixels, states);
+        } else {
+                sf::VertexArray cells(sf::Quads);
+                for (int y=0; y<_mapHeight; y++)
+                    for (int x=0; x<_mapWidth; x++)
+                        if (cellMap[y][x][isEvenTurn]) {
+                            int cellOriginX = x*CONFIG_CELL_SCALE_FACTOR;
+                            int cellOriginY = y*CONFIG_CELL_SCALE_FACTOR;
+
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX, cellOriginY), sf::Color::White));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX, cellOriginY + CONFIG_CELL_SCALE_FACTOR-1), sf::Color::White));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX + CONFIG_CELL_SCALE_FACTOR-1, cellOriginY + CONFIG_CELL_SCALE_FACTOR-1), sf::Color::White));
+                            cells.append(sf::Vertex(sf::Vector2f(cellOriginX + CONFIG_CELL_SCALE_FACTOR-1, cellOriginY), sf::Color::White));
+                        }
+
+                target.draw(cells, states);
+        }
+        
     }
 
 
