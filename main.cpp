@@ -5,7 +5,7 @@
 
 int main()
 {
-    bool isPaused = true;
+    bool isPaused = false;
     // create the window
     sf::RenderWindow window(sf::VideoMode(CONFIG_WINDOW_WIDTH, CONFIG_WINDOW_HEIGHT), "Game of Life");
     window.setFramerateLimit(15);
